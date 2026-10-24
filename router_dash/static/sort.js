@@ -2,13 +2,26 @@
 // No external dependencies; the page is fully usable without JavaScript.
 "use strict";
 
-// Render <time datetime="..."> elements in the browser's local timezone.
-// The server renders UTC as a no-JS fallback.
+// Render <time datetime="..."> elements in the browser's local timezone
+// as YYYY-MM-DD HH:MM (24-hour clock), independent of the browser locale.
+// The server renders the same shape in UTC as a no-JS fallback.
 function localTimes() {
+  function pad(n) {
+    return n < 10 ? "0" + n : String(n);
+  }
   document.querySelectorAll("time[datetime]").forEach(function (el) {
     var d = new Date(el.getAttribute("datetime"));
     if (!isNaN(d.getTime())) {
-      el.textContent = d.toLocaleString();
+      el.textContent =
+        d.getFullYear() +
+        "-" +
+        pad(d.getMonth() + 1) +
+        "-" +
+        pad(d.getDate()) +
+        " " +
+        pad(d.getHours()) +
+        ":" +
+        pad(d.getMinutes());
     }
   });
 }
