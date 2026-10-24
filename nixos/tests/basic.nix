@@ -328,6 +328,14 @@ in
         data = json.loads(response)
         assert data == {"status": "ok"}, f"unexpected response: {data}"
 
+      with subtest("No gunicorn control socket errors"):
+        # gunicorn >= 25.1 creates a control socket in $HOME (/var/empty,
+        # read-only under ProtectSystem=strict) unless disabled; the module
+        # disables it because systemd manages the service lifecycle.
+        server.fail(
+          "journalctl -b -u router-dash.service | grep -i 'control server'"
+        )
+
       with subtest("Security headers"):
         headers = server.succeed("curl -sI ${routerDashUrl}/healthz")
         assert "content-security-policy: default-src 'none'" in headers.lower(), headers

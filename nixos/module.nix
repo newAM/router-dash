@@ -8,6 +8,13 @@
   settingsFormat = pkgs.formats.json {};
   configurationFile = settingsFormat.generate "router_dash_config.json" cfg.settings;
   gunicornConfigFile = pkgs.writeText "gunicorn.conf.py" ''
+    # Disable the control socket (gunicorn >= 25.1): it defaults to
+    # $HOME/.gunicorn, which is /var/empty for the system user and
+    # read-only under ProtectSystem=strict. Runtime management is
+    # systemd's job, so there is no need to provision a writable
+    # location for gunicornc.
+    control_socket_disable = True
+
     accesslog = "-"
     access_log_format = "%(m)s %(U)s %(s)s %(b)s %(D)sµs"
     logger_class = "gunicorn.glogging.Logger"
