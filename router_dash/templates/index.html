@@ -1,0 +1,42 @@
+{% extends "base.html" %} {% block title %}DHCP Leases - Router Dash{% endblock
+%} {% block content %}
+<h1>DHCP Leases</h1>
+<p>
+  {{ rows | length }} active entr{{ "y" if rows | length == 1 else "ies" }}.
+</p>
+{% if rows %}
+<table class="sortable">
+  <thead>
+    <tr>
+      <th aria-sort="ascending">
+        <button type="button" data-type="num">IP Address</button>
+      </th>
+      <th><button type="button" data-type="str">Hostname</button></th>
+      <th><button type="button" data-type="num">MAC Address</button></th>
+      <th><button type="button" data-type="str">Client ID</button></th>
+      <th><button type="button" data-type="num">State</button></th>
+      <th><button type="button" data-type="num">Subnet</button></th>
+      <th><button type="button" data-type="num">Expires</button></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in rows %}
+    <tr>
+      <td data-v="{{ row.ip_v }}">{{ row.ip }}</td>
+      <td data-v="{{ row.hostname_v }}">{{ row.hostname }}</td>
+      <td data-v="{{ row.mac_v }}">{{ row.mac }}</td>
+      <td data-v="{{ row.client_id_v }}">{{ row.client_id }}</td>
+      <td data-v="{{ row.state_v }}">{{ row.state }}</td>
+      <td data-v="{{ row.subnet_v }}">{{ row.subnet }}</td>
+      <td data-v="{{ row.expires_v }}">
+        <time datetime="{{ row.expires_iso }}" class="{{ row.expires_class }}"
+          >{{ row.expires }}</time
+        >
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>No leases.</p>
+{% endif %} {% endblock %}

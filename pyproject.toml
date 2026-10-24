@@ -1,0 +1,26 @@
+[project]
+name = "router-dash"
+version = "0.1.0"
+description = "A dashboard for my router"
+readme = "README.md"
+authors = [{ name = "Alex Martens", email = "alex+router-dash@thinglab.org" }]
+requires-python = ">=3.13"
+license = "AGPL-3.0-or-later"
+dependencies = ["authlib", "flask", "flask-session", "flask-wtf", "requests"]
+
+[project.urls]
+Repository = "https://github.com/newAM/router-dash"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["router_dash*"]
+
+[tool.setuptools.package-data]
+router_dash = ["templates/*.html", "static/*"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
